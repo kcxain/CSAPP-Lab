@@ -10,7 +10,7 @@ mathjax: true
 
 # 实验概览
 
-Attack！，成为一名黑客不正是我小时候的梦想吗？这个实验一定会很有趣。
+Attack！成为一名黑客不正是我小时候的梦想吗？这个实验一定会很有趣。
 
 CMU 对本实验的官方说明文档：http://csapp.cs.cmu.edu/3e/attacklab.pdf，按照 CMU 的文档一步步往下走就可以了。
 
