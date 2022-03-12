@@ -841,8 +841,8 @@ void sim_log( const char *format, ... ) {
  **********************/
 
 /* Hack for SunOS */
-extern int matherr();
-int *tclDummyMathPtr = (int *) matherr;
+//extern int matherr();
+//int *tclDummyMathPtr = (int *) matherr;
 
 static char tcl_msg[256];
 
