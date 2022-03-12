@@ -1,4 +1,4 @@
-# sum_list - Sum the elements of a linked list
+# /* rsum_list - Recursive version of sum_list */
 # author: Deconx
 
 # Execution begins at address 0
@@ -21,24 +21,25 @@ ele3:
 
 main:
         irmovq ele1,%rdi
-        call sum_list
+        call rsum_list
         ret
 
 # long sum_list(list_ptr ls)
 # start in %rdi
-sum_list:
-        irmovq $0, %rax
-        jmp test
-
-loop:
-        mrmovq (%rdi), %rsi
-        addq %rsi, %rax
-        mrmovq 8(%rdi), %rdi
-
-test:
+rsum_list:
         andq %rdi, %rdi
-        jne loop
+        je return               # if(!ls)
+        mrmovq (%rdi), %rbx     # val = ls->val
+        mrmovq 8(%rdi), %rdi    # ls = ls->next
+        pushq %rbx
+        call rsum_list          # rsum_list(ls->next)
+        popq %rbx
+        addq %rbx, %rax         # val + rest
         ret
+return:
+        irmovq $0, %rax
+        ret
+
 
 # Stack starts here and grows to lower addresses
         .pos 0x200

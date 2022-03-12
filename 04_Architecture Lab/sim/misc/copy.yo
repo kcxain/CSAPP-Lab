@@ -1,0 +1,54 @@
+                            | /* copy_block - Copy src to dest and return xor checksum of src */
+                            | # author: Deconx
+                            | 
+                            | # Execution begins at address 0
+0x000:                      |         .pos 0
+0x000: 30f40002000000000000 |         irmovq stack, %rsp      # Set up stack pointer
+0x00a: 804800000000000000   |         call main               # Execute main program
+0x013: 00                   |         halt                    # Terminate program
+                            | 
+                            | # Sample
+0x018:                      |         .align 8
+                            | # Source block
+0x018:                      | src:
+0x018: 0a00000000000000     |         .quad 0x00a
+0x020: b000000000000000     |         .quad 0x0b0
+0x028: 000c000000000000     |         .quad 0xc00
+                            | 
+                            | # Destination block
+0x030:                      | dest:
+0x030: 1101000000000000     |         .quad 0x111
+0x038: 2202000000000000     |         .quad 0x222
+0x040: 3303000000000000     |         .quad 0x333
+                            | 
+0x048:                      | main:
+0x048: 30f71800000000000000 |         irmovq src, %rdi        # src
+0x052: 30f63000000000000000 |         irmovq dest, %rsi       # dest
+0x05c: 30f20300000000000000 |         irmovq $3, %rdx         # len
+0x066: 807000000000000000   |         call copy_block
+0x06f: 90                   |         ret
+                            | 
+                            | # long copy_block(long *src, long *dest, long len)
+                            | # src in %rdi
+                            | # dest in %rsi
+                            | # len in %rdx
+0x070:                      | copy_block:
+0x070: 30f80800000000000000 |         irmovq $8, %r8
+0x07a: 30f90100000000000000 |         irmovq $1, %r9
+0x084: 30f00000000000000000 |         irmovq $0, %rax
+0x08e: 6222                 |         andq %rdx, %rdx
+0x090: 70b500000000000000   |         jmp test
+0x099:                      | loop:
+0x099: 50a70000000000000000 |         mrmovq (%rdi), %r10     # val = *src1
+0x0a3: 6087                 |         addq %r8, %rdi          # src++
+0x0a5: 40a60000000000000000 |         rmmovq %r10, (%rsi)     # *dest = val
+0x0af: 6086                 |         addq %r8, %rsi          # dest++
+0x0b1: 63a0                 |         xorq %r10, %rax         # result ^= val
+0x0b3: 6192                 |         subq %r9, %rdx          # len--.  Set CC
+0x0b5:                      | test:
+0x0b5: 749900000000000000   |         jne loop                # Stop when 0
+0x0be: 90                   |         ret
+                            |         
+                            | # Stack starts here and grows to lower addresses
+0x200:                      |         .pos 0x200
+0x200:                      | stack: 
