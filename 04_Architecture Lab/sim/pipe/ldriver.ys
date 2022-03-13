@@ -17,9 +17,12 @@ StartFun:
 # Return the number of positive words (>0) contained in src.
 #
 # Include your name and ID here.
+# Deconx From HIT
 #
 # Describe how and why you modified the baseline code.
-#
+# 1. 删除清零 %rax 的操作，因为它默认是0
+# 2. 用上 iaddq 简化代码
+# 3. 按 6 循环展开
 ##################################################################
 # Do not modify this portion
 # Function prologue.
@@ -29,23 +32,96 @@ ncopy:
 ##################################################################
 # You can modify this portion
 	# Loop header
-	xorq %rax,%rax		# count = 0;
 	andq %rdx,%rdx		# len <= 0?
-	jle Done		# if so, goto Done:
+	jmp test
+Loop:
+	mrmovq (%rdi),%r8
+	mrmovq 8(%rdi),%r9
+	andq %r8,%r8
+	rmmovq %r8,(%rsi)
+	rmmovq %r9,8(%rsi)
+	jle Loop1
+	iaddq $1,%rax
+Loop1:	
+	andq %r9,%r9
+	jle Loop2
+	iaddq $1,%rax
+Loop2:
+	mrmovq 16(%rdi),%r8
+	mrmovq 24(%rdi),%r9
+	andq %r8,%r8
+	rmmovq %r8,16(%rsi)
+	rmmovq %r9,24(%rsi)
+	jle Loop3
+	iaddq $1,%rax
+Loop3:	
+	andq %r9,%r9
+	jle Loop4
+	iaddq $1,%rax
+Loop4:
+	mrmovq 32(%rdi),%r8
+	mrmovq 40(%rdi),%r9
+	andq %r8,%r8
+	rmmovq %r8,32(%rsi)
+	rmmovq %r9,40(%rsi)
+	jle Loop5
+	iaddq $1,%rax
+Loop5:
+	iaddq $48,%rdi
+	iaddq $48,%rsi		
+	andq %r9,%r9
+	jle test
+	iaddq $1,%rax
+test:
+	iaddq $-6, %rdx			# 先减，判断够不够6个
+	jge Loop				# 6路展开
+	iaddq $6, %rdx
+	jmp test2				#剩下的
 
-Loop:	mrmovq (%rdi), %r10	# read val from src...
-	rmmovq %r10, (%rsi)	# ...and store it to dst
-	andq %r10, %r10		# val <= 0?
-	jle Npos		# if so, goto Npos:
-	irmovq $1, %r10
-	addq %r10, %rax		# count++
-Npos:	irmovq $1, %r10
-	subq %r10, %rdx		# len--
-	irmovq $8, %r10
-	addq %r10, %rdi		# src++
-	addq %r10, %rsi		# dst++
-	andq %rdx,%rdx		# len > 0?
-	jg Loop			# if so, goto Loop:
+L:
+	mrmovq (%rdi),%r8
+	andq %r8,%r8
+	rmmovq %r8,(%rsi)
+	jle L1
+	iaddq $1,%rax
+L1:
+	mrmovq 8(%rdi),%r8
+	andq %r8,%r8
+	rmmovq %r8,8(%rsi)
+	jle L2
+	iaddq $1,%rax
+L2:
+	mrmovq 16(%rdi),%r8
+	iaddq $24,%rdi
+	rmmovq %r8,16(%rsi)
+	iaddq $24,%rsi
+	andq %r8,%r8
+	jle test2
+	iaddq $1,%rax
+test2:
+	iaddq $-3, %rdx			# 先减，判断够不够3个
+	jge L
+	iaddq $2, %rdx			# -1则不剩了，直接Done,0 剩一个, 1剩2个
+    je R0
+    jl Done
+	mrmovq (%rdi),%r8
+	mrmovq 8(%rdi),%r9
+	rmmovq %r8,(%rsi)
+	rmmovq %r9,8(%rsi)
+	andq %r8,%r8
+	jle R2
+	iaddq $1,%rax
+R2:
+	andq %r9,%r9
+	jle Done
+	iaddq $1,%rax
+	jmp Done
+R0:
+	mrmovq (%rdi),%r8
+	andq %r8,%r8
+	rmmovq %r8,(%rsi)
+	jle Done
+	iaddq $1,%rax
 ##################################################################
 # Do not modify the following section of code
 # Function epilogue.
@@ -62,69 +138,69 @@ EndFun:
 ###############################
 	.align 8
 src:
-	.quad -1
+	.quad 1
 	.quad -2
-	.quad 3
-	.quad 4
+	.quad -3
+	.quad -4
 	.quad 5
 	.quad -6
 	.quad -7
-	.quad 8
+	.quad -8
 	.quad -9
 	.quad 10
 	.quad 11
 	.quad 12
-	.quad -13
-	.quad 14
-	.quad 15
-	.quad 16
+	.quad 13
+	.quad -14
+	.quad -15
+	.quad -16
 	.quad 17
 	.quad -18
 	.quad 19
-	.quad -20
-	.quad 21
-	.quad -22
+	.quad 20
+	.quad -21
+	.quad 22
 	.quad -23
-	.quad -24
+	.quad 24
 	.quad 25
 	.quad 26
-	.quad 27
+	.quad -27
 	.quad -28
 	.quad 29
-	.quad -30
+	.quad 30
 	.quad -31
-	.quad -32
+	.quad 32
 	.quad 33
 	.quad 34
 	.quad -35
 	.quad -36
-	.quad -37
-	.quad -38
-	.quad 39
-	.quad 40
+	.quad 37
+	.quad 38
+	.quad -39
+	.quad -40
 	.quad 41
-	.quad 42
+	.quad -42
 	.quad -43
 	.quad 44
 	.quad -45
 	.quad -46
 	.quad -47
 	.quad 48
-	.quad -49
-	.quad 50
+	.quad 49
+	.quad -50
 	.quad 51
 	.quad -52
 	.quad 53
-	.quad -54
-	.quad -55
+	.quad 54
+	.quad 55
 	.quad -56
 	.quad 57
-	.quad 58
+	.quad -58
 	.quad -59
-	.quad 60
-	.quad -61
+	.quad -60
+	.quad 61
 	.quad -62
-	.quad -63
+	.quad 63
 	.quad 0xbcdefa # This shouldn't get moved
 
 	.align 16
