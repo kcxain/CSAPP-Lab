@@ -1,6 +1,8 @@
 # CS:APP-Lab
 
 > CMU官网地址：http://csapp.cs.cmu.edu/3e/labs.html
+>
+> 我的知乎专栏：https://www.zhihu.com/column/c_1480603406519238656
 
 ## lab 1  [*Data Lab*](http://csapp.cs.cmu.edu/3e/datalab-handout.tar)
 
