@@ -8,10 +8,10 @@
 
 我对各个实验的深入解析文档，也可前往我的[知乎专栏](https://www.zhihu.com/column/c_1480603406519238656)获得更好的阅读体验
 
-- [01 DataLab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/01 DataLab 笔记.md)
-- [02 BombLab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/02 BombLab 笔记.md)
-- [03 AttackLab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/03 AttackLab 笔记.md)
-- [04 Architecture Lab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/04 Architecture Lab 笔记.md)
+- [01 DataLab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/01%20DataLab%20%E7%AC%94%E8%AE%B0.md)
+- [02 BombLab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/02%20BombLab%20%E7%AC%94%E8%AE%B0.md)
+- [03 AttackLab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/03%20AttackLab%20%E7%AC%94%E8%AE%B0.md)
+- [04 Architecture Lab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/04%20Architecture%20Lab%20%E7%AC%94%E8%AE%B0.md)
 
 ### [initial_labs](https://github.com/Deconx/CSAPP-Lab/tree/master/initial_labs)
 
@@ -23,15 +23,15 @@
 
 ## 实验进度：
 
-- [x] [Data Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/01_Data Lab)
-- [x] [Bomb Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/02_Bomb Lab)
-- [x] [Attack Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/03_Attack Lab)
-- [x] [Architecture Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/04_Architecture Lab)
-- [ ] [Cache Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/05_Cache Lab)
-- [ ] [Performance Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/06_Performance Lab)
-- [ ] [Shell Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/07_Shell Lab)
-- [ ] [Malloc Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/08_Malloc Lab)
-- [ ] [Proxy Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/09_Proxy Lab)
+- [x] [Data Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/01_Data%20Lab)
+- [x] [Bomb Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/02_Bomb%20Lab)
+- [x] [Attack Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/03_Attack%20Lab)
+- [x] [Architecture Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/04_Architecture%20Lab)
+- [ ] [Cache Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/05_Cache%20Lab)
+- [ ] [Performance Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/06_Performance%20Lab)
+- [ ] [Shell Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/07_Shell%20Lab)
+- [ ] [Malloc Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/08_Malloc%20Lab)
+- [ ] [Proxy Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/09_Proxy%20Lab)
 
 ## 实验介绍
 
