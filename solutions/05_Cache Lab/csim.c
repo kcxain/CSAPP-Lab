@@ -1,4 +1,7 @@
-// A Cache Simulator by Deconx
+/*
+ * A Cache Simulator by Deconx
+ * 2022/3/19
+ */
 #include "cachelab.h"
 #include <unistd.h>
 #include <getopt.h>
