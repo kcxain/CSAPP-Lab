@@ -13,6 +13,7 @@
 - [03 AttackLab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/03%20AttackLab%20%E7%AC%94%E8%AE%B0.md)
 - [04 Architecture Lab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/04%20Architecture%20Lab%20%E7%AC%94%E8%AE%B0.md)
 - [05 Cache Lab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/05%20Cache%20Lab%20%E7%AC%94%E8%AE%B0.md)
+- [06 Performance Lab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/06%20Performance%20Lab%20%E7%AC%94%E8%AE%B0.md)
 
 ### [initial_labs](https://github.com/Deconx/CSAPP-Lab/tree/master/initial_labs)
 
