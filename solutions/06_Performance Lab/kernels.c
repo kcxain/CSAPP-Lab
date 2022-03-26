@@ -10,10 +10,10 @@
  * Please fill in the following team struct 
  */
 team_t team = {
-    "bovik",              /* Team name */
+    "Oh!",              /* Team name */
 
-    "Harry Q. Bovik",     /* First member full name */
-    "bovik@nowhere.edu",  /* First member email address */
+    "Deconx",     /* First member full name */
+    "deconx@vip.qq.com",  /* First member email address */
 
     "",                   /* Second member full name (leave blank if none) */
     ""                    /* Second member email addr (leave blank if none) */
@@ -47,7 +47,20 @@ void naive_rotate(int dim, pixel *src, pixel *dst)
 char rotate_descr[] = "rotate: Current working version";
 void rotate(int dim, pixel *src, pixel *dst) 
 {
-    naive_rotate(dim, src, dst);
+    for (int i = 0; i < dim; i += 8){
+        for (int j = 0; j < dim; j += 8){
+            for (int k = i; k < i+8; k++){
+                dst[RIDX(dim-1-j, k, dim)] = src[RIDX(k, j+0, dim)];
+                dst[RIDX(dim-2-j, k, dim)] = src[RIDX(k, j+1, dim)];
+                dst[RIDX(dim-3-j, k, dim)] = src[RIDX(k, j+2, dim)];
+                dst[RIDX(dim-4-j, k, dim)] = src[RIDX(k, j+3, dim)];
+                dst[RIDX(dim-5-j, k, dim)] = src[RIDX(k, j+4, dim)];
+                dst[RIDX(dim-6-j, k, dim)] = src[RIDX(k, j+5, dim)];
+                dst[RIDX(dim-7-j, k, dim)] = src[RIDX(k, j+6, dim)];
+                dst[RIDX(dim-8-j, k, dim)] = src[RIDX(k, j+7, dim)];
+            }
+        }
+    }
 }
 
 /*********************************************************************
@@ -155,7 +168,36 @@ void naive_smooth(int dim, pixel *src, pixel *dst)
 	for (j = 0; j < dim; j++)
 	    dst[RIDX(i, j, dim)] = avg(dim, i, j, src);
 }
-
+static void set_corner(int cc, pixel *src, pixel *dst, int a1, int a2, int a3){
+    dst[cc].blue = (src[cc].blue+src[a1].blue+src[a2].blue+src[a3].blue) >> 2;
+    dst[cc].green = (src[cc].green+src[a1].green+src[a2].green+src[a3].green) >> 2;
+    dst[cc].red = (src[cc].red+src[a1].red+src[a2].red+src[a3].red) >> 2;
+}
+static void set_top(int dim, pixel *src, pixel *dst, int j){
+    dst[j].blue = (src[j].blue+src[j+dim].blue+src[j-1].blue+src[j+1].blue+src[j+dim-1].blue+src[j+dim+1].blue)/6;
+    dst[j].green = (src[j].green+src[j+dim].green+src[j-1].green+src[j+1].green+src[j+dim-1].green+src[j+dim+1].green)/6;
+    dst[j].red = (src[j].red+src[j+dim].red+src[j-1].red+src[j+1].red+src[j+dim-1].red+src[j+dim+1].red)/6;
+}
+static void set_bottom(int dim, pixel *src, pixel *dst, int j){
+    dst[j].blue = (src[j].blue+src[j-dim].blue+src[j-1].blue+src[j+1].blue+src[j-dim-1].blue+src[j-dim+1].blue)/6;
+    dst[j].green = (src[j].green+src[j-dim].green+src[j-1].green+src[j+1].green+src[j-dim-1].green+src[j-dim+1].green)/6;
+    dst[j].red = (src[j].red+src[j-dim].red+src[j-1].red+src[j+1].red+src[j-dim-1].red+src[j-dim+1].red)/6;
+}
+static void set_left(int dim, pixel *src, pixel *dst, int i){
+    dst[i].blue = (src[i].blue+src[i-dim].blue+src[i-dim+1].blue+src[i+1].blue+src[i+dim].blue+src[i+dim+1].blue)/6;
+    dst[i].green = (src[i].green+src[i-dim].green+src[i-dim+1].green+src[i+1].green+src[i+dim].green+src[i+dim+1].green)/6;
+    dst[i].red = (src[i].red+src[i-dim].red+src[i-dim+1].red+src[i+1].red+src[i+dim].red+src[i+dim+1].red)/6;
+}
+static void set_right(int dim, pixel *src, pixel *dst, int i){
+    dst[i].blue = (src[i].blue+src[i-dim].blue+src[i-dim-1].blue+src[i-1].blue+src[i+dim].blue+src[i+dim-1].blue)/6;
+    dst[i].green = (src[i].green+src[i-dim].green+src[i-dim-1].green+src[i-1].green+src[i+dim].green+src[i+dim-1].green)/6;
+    dst[i].red = (src[i].red+src[i-dim].red+src[i-dim-1].red+src[i-1].red+src[i+dim].red+src[i+dim-1].red)/6;
+}
+static void set_in(int dim, pixel *src, pixel *dst, int k){
+    dst[k].blue = (src[k].blue+src[k-1].blue+src[k+1].blue+src[k+dim-1].blue+src[k+dim].blue+src[k+dim+1].blue+src[k-dim-1].blue+src[k-dim].blue+src[k-dim+1].blue)/9;
+    dst[k].green = (src[k].green+src[k-1].green+src[k+1].green+src[k+dim-1].green+src[k+dim].green+src[k+dim+1].green+src[k-dim-1].green+src[k-dim].green+src[k-dim+1].green)/9;
+    dst[k].red = (src[k].red+src[k-1].red+src[k+1].red+src[k+dim-1].red+src[k+dim].red+src[k+dim+1].red+src[k-dim-1].red+src[k-dim].red+src[k-dim+1].red)/9;
+}
 /*
  * smooth - Your current working version of smooth. 
  * IMPORTANT: This is the version you will be graded on
@@ -163,7 +205,24 @@ void naive_smooth(int dim, pixel *src, pixel *dst)
 char smooth_descr[] = "smooth: Current working version";
 void smooth(int dim, pixel *src, pixel *dst) 
 {
-    naive_smooth(dim, src, dst);
+    // 处理四个角
+    set_corner(0, src, dst, 1, dim, dim+1);
+    set_corner(dim-1, src, dst, dim-2, dim+dim-2, dim+dim-1);
+    set_corner(RIDX(dim-1, 0, dim), src, dst, RIDX(dim-1, 1, dim), RIDX(dim-2, 0, dim), RIDX(dim-2, 1, dim));
+    set_corner(RIDX(dim-1, dim-1, dim), src, dst, RIDX(dim-1, dim-2, dim), RIDX(dim-2, dim-2, dim), RIDX(dim-2, dim-1, dim));
+    // 处理四个边
+    for(int j = 1; j <= dim-2; j++){
+        set_top(dim, src, dst, j);
+        set_bottom(dim, src, dst, dim*dim-dim+j);
+        set_left(dim, src, dst, j*dim);
+        set_right(dim, src, dst, j*dim+dim-1);
+    }
+    // 中间部分
+    for(int i = 1; i <= dim-2; i++){
+        for(int j = 1; j <= dim-2; j++){
+            set_in(dim, src, dst, i*dim+j);
+        }
+    }    
 }
 
 

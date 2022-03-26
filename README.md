@@ -29,7 +29,7 @@
 - [x] [Attack Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/03_Attack%20Lab)
 - [x] [Architecture Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/04_Architecture%20Lab)
 - [x] [Cache Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/05_Cache%20Lab)
-- [ ] [Performance Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/06_Performance%20Lab)
+- [x] [Performance Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/06_Performance%20Lab)
 - [ ] [Shell Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/07_Shell%20Lab)
 - [ ] [Malloc Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/08_Malloc%20Lab)
 - [ ] [Proxy Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/09_Proxy%20Lab)

@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "defs.h": "c",
+        "stdlib.h": "c"
+    }
+}
