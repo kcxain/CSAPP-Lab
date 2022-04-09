@@ -219,7 +219,7 @@ void *find_fit(size_t asize)
     void *bp;
     size_t min = 0;
     for(bp = heap_list; GET_SIZE(HDRP(bp)) > 0; bp = NEXT_BLKP(bp)){
-        if((GET_SIZE(HDRP(bp)) >= asize) && (!GET_ALLOC(HDRP(bp))) && min > GET_SIZE(HDRP(bp)) ){
+        if((GET_SIZE(HDRP(bp)) >= asize) && (!GET_ALLOC(HDRP(bp)))){
             return bp;
         }
     }
@@ -292,7 +292,6 @@ void *mm_realloc(void *ptr, size_t size)
     mm_free(oldptr);
     return newptr;
 }
-
 
 
 
