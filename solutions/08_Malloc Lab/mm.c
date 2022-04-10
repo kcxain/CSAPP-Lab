@@ -140,7 +140,7 @@ void *extend_heap(size_t words)
 void *coalesce(void *bp)
 {
     size_t prev_alloc = GET_ALLOC(FTRP(PREV_BLKP(bp)));     /* 前一块大小 */
-    size_t next_alloc = GET_ALLOC(HDRP(PREV_BLKP(bp)));     /* 后一块大小 */
+    size_t next_alloc = GET_ALLOC(HDRP(NEXT_BLKP(bp)));     /* 后一块大小 */
     size_t size = GET_SIZE(HDRP(bp));                       /* 当前块大小 */
 
     /*
@@ -166,8 +166,8 @@ void *coalesce(void *bp)
     /* 都空 */
     else{
         size += GET_SIZE(HDRP(PREV_BLKP(bp))) + GET_SIZE(FTRP(NEXT_BLKP(bp)));  //增加当前块大小
-        PUT(HDRP(PREV_BLKP(bp)), PACK(size, 0));
         PUT(FTRP(NEXT_BLKP(bp)), PACK(size, 0));
+        PUT(HDRP(PREV_BLKP(bp)), PACK(size, 0));
         bp = PREV_BLKP(bp);
     }
     return bp;
@@ -198,7 +198,7 @@ void *mm_malloc(size_t size)
     else
         asize = DSIZE * ((size + (DSIZE) + (DSIZE-1)) / DSIZE);
     /* 寻找合适的空闲块 */
-    if((bp = find_fit(asize)) != NULL){
+    if((bp = best_fit(asize)) != NULL){
         place(bp, asize);
         return bp;
     }
@@ -217,7 +217,6 @@ void *mm_malloc(size_t size)
 void *find_fit(size_t asize)
 {
     void *bp;
-    size_t min = 0;
     for(bp = heap_list; GET_SIZE(HDRP(bp)) > 0; bp = NEXT_BLKP(bp)){
         if((GET_SIZE(HDRP(bp)) >= asize) && (!GET_ALLOC(HDRP(bp)))){
             return bp;
@@ -225,20 +224,23 @@ void *find_fit(size_t asize)
     }
     return NULL;
 }
-
 /*
  * 最佳适配
  */
-void *best_fit(size_t asize)
-{
-    void *bp;
-    for(bp = heap_list; GET_SIZE(HARP(bp)) > 0; bp = NEXT_BLKP(bp)){
-
+void *best_fit(size_t asize){
+	void *bp;
+    void *best_bp = NULL;
+	size_t min_size = 0;
+    for(bp = heap_list; GET_SIZE(HDRP(bp)) > 0; bp = NEXT_BLKP(bp)){
+        if((GET_SIZE(HDRP(bp)) >= asize) && (!GET_ALLOC(HDRP(bp)))){
+            if(min_size ==0 || min_size > GET_SIZE(HDRP(bp))){
+                min_size = GET_SIZE(HDRP(bp));
+                best_bp = bp;
+            }
+        }
     }
-}
-
-
-
+    return best_bp;
+} 
 
 /*
  * 分离空闲块
@@ -252,8 +254,8 @@ void place(void *bp, size_t asize)
         PUT(HDRP(bp), PACK(asize, 1));
         PUT(FTRP(bp), PACK(asize, 1));
         bp = NEXT_BLKP(bp);
-        PUT(HDRP(bp), PACK(csize - asize, 1));
-        PUT(FTRP(bp), PACK(csize - asize, 1));
+        PUT(HDRP(bp), PACK(csize - asize, 0));
+        PUT(FTRP(bp), PACK(csize - asize, 0));
     }
     /* 设置为填充 */
     else{
@@ -266,6 +268,8 @@ void place(void *bp, size_t asize)
  */
 void mm_free(void *ptr)
 {
+    if(ptr==0)
+        return;
     size_t size = GET_SIZE(HDRP(ptr));
 
     PUT(HDRP(ptr), PACK(size, 0));
@@ -278,19 +282,33 @@ void mm_free(void *ptr)
  */
 void *mm_realloc(void *ptr, size_t size)
 {
-    void *oldptr = ptr;
-    void *newptr;
-    size_t copySize;
+    // void *oldptr = ptr;
+    // void *newptr;
+    // size_t copySize;
     
-    newptr = mm_malloc(size);
-    if (newptr == NULL)
-      return NULL;
-    copySize = *(size_t *)((char *)oldptr - SIZE_T_SIZE);
-    if (size < copySize)
-      copySize = size;
-    memcpy(newptr, oldptr, copySize);
-    mm_free(oldptr);
+    // newptr = mm_malloc(size);
+    // if (newptr == NULL)
+    //   return NULL;
+    // copySize = *(size_t *)((char *)oldptr - SIZE_T_SIZE);
+    // if (size < copySize)
+    //   copySize = size;
+    // memcpy(newptr, oldptr, copySize);
+    // mm_free(oldptr);
+    // return newptr;
+    
+    /* size可能为0,则mm_malloc返回NULL */
+    void *newptr;
+    size_t copysize;
+    
+    if((newptr = mm_malloc(size))==NULL)
+        return 0;
+    copysize = GET_SIZE(HDRP(ptr));
+    if(size < copysize)
+        copysize = size;
+    memcpy(newptr, ptr, copysize);
+    mm_free(ptr);
     return newptr;
+
 }
 
 
@@ -302,6 +320,6 @@ void *mm_realloc(void *ptr, size_t size)
 
 
 
-
+ 
 
 
