@@ -83,7 +83,7 @@ team_t team = {
 #define NEXT_BLKP(bp) ((char*)(bp) + GET_SIZE(((char*)(bp) - WSIZE)))
 #define PREV_BLKP(bp) ((char*)(bp) - GET_SIZE(((char*)(bp) - DSIZE)))
 
-#define CLASS_SIZE 18
+#define CLASS_SIZE 20
 /* 总是指向序言块的第二块 */
 static char *heap_list;
 
@@ -94,7 +94,7 @@ static void *find_fit(size_t asize);        //找到匹配的块
 static void place(void *bp, size_t asize);  //分割空闲块
 static void delete(void *bp);               //从相应链表中删除块
 static void insert(void *bp);               //在对应链表中插入块
-static int search(size_t size);            //根据块大小, 找到头节点位置
+static int search(size_t size);             //根据块大小, 找到头节点位置
 /* 
  * mm_init - initialize the malloc package.
  */
@@ -103,7 +103,7 @@ int mm_init(void)
     /* 申请四个字节空间 */
     if((heap_list = mem_sbrk((4+CLASS_SIZE)*WSIZE)) == (void *)-1)
         return -1;
-    /* 初始化18个大小类头指针 */
+    /* 初始化20个大小类头指针 */
     for(int i = 0; i < CLASS_SIZE; i++){
         PUT(heap_list + i*WSIZE, NULL);
     }
@@ -163,7 +163,8 @@ void *coalesce(void *bp)
      */
     /* 前后都不空 */
     if(prev_alloc && next_alloc){
-        bp = bp;
+        insert(bp);
+        return bp;
     }
     /* 前不空后空 */
     else if(prev_alloc && !next_alloc){
@@ -269,43 +270,53 @@ void delete(void *bp)
  */
 int search(size_t size)
 {
-    if (size <= (1 << 4)) {
-		return 0;
-	} else if (size <= (1 << 5)) {
-		return 1;
-	} else if (size <= (1 << 6)) {
-		return 2;
-	} else if (size <= (1 << 7)) {
-		return 3;
-	} else if (size <= (1 << 8)) {
-		return 4;
-	} else if (size <= (1 << 9)) {
-		return 5;
-	} else if (size <= (1 << 10)) {
-		return 6;
-	} else if (size <= (1 << 11)) {
-		return 7;
-	} else if (size <= (1 << 12)) {
-		return 8;
-	} else if (size <= (1 << 13)) {
-		return 9;
-	} else if (size <= (1 << 14)) {
-		return 10;
-	} else if (size <= (1 << 15)) {
-		return 11;
-	} else if (size <= (1 << 16)) {
-		return 12;
-	} else if (size <= (1 << 17)) {
-		return 13;
-	} else if (size <= (1 << 18)) {
-		return 14;
-	} else if (size <= (1 << 19)) {
-		return 15;
-	} else if (size <= (1 << 20)) {
-		return 16;
-	} else {
-		return 17;
-	}
+    int i;
+    for(i = 4; i <=22; i++){
+        if(size <= (1 << i))
+            return i-4;
+    }
+    return i-4;
+    // if (size <= (1 << 4)) {
+	// 	return 0;
+	// } else if (size <= (1 << 5)) {
+	// 	return 1;
+	// } else if (size <= (1 << 6)) {
+	// 	return 2;
+	// } else if (size <= (1 << 7)) {
+	// 	return 3;
+	// } else if (size <= (1 << 8)) {
+	// 	return 4;
+	// } else if (size <= (1 << 9)) {
+	// 	return 5;
+	// } else if (size <= (1 << 10)) {
+	// 	return 6;
+	// } else if (size <= (1 << 11)) {
+	// 	return 7;
+	// } else if (size <= (1 << 12)) {
+	// 	return 8;
+	// } else if (size <= (1 << 13)) {
+	// 	return 9;
+	// } else if (size <= (1 << 14)) {
+	// 	return 10;
+	// } else if (size <= (1 << 15)) {
+	// 	return 11;
+	// } else if (size <= (1 << 16)) {
+	// 	return 12;
+	// } else if (size <= (1 << 17)) {
+	// 	return 13;
+	// } else if (size <= (1 << 18)) {
+	// 	return 14;
+	// } else if (size <= (1 << 19)) {
+	// 	return 15;
+	// } else if (size <= (1 << 20)) {
+	// 	return 16;
+	// } else if (size <= (1 << 21)){
+	// 	return 17;
+	// } else if (size <= (1 << 22)){
+    //     return 18;
+    // } else {
+    //     return 19;
+    // }
 }
 /* 
  * mm_malloc - Allocate a block by incrementing the brk pointer.
