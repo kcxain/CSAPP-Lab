@@ -298,7 +298,7 @@ wait_for_port_use "${proxy_port}"
 # Run a special blocking nop-server that never responds to requests
 nop_port=$(free_port)
 echo "Starting the blocking NOP server on port ${nop_port}"
-./nop-server.py ${nop_port} &> /dev/null &
+python3 nop-server.py ${nop_port} &> /dev/null &
 nop_pid=$!
 
 # Wait for the nop server to start in earnest
