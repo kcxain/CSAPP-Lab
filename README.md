@@ -16,6 +16,7 @@
 - [06 Performance Lab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/06%20Performance%20Lab%20%E7%AC%94%E8%AE%B0.md)
 - [07 Shell Lab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/07%20Shell%20Lab.md)
 - [08 Malloc Lab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/08%20Malloc%20Lab%20%E7%AC%94%E8%AE%B0.md)
+- [09 Proxy Lab 笔记](https://github.com/Deconx/CSAPP-Lab/blob/master/Notes/09%20Proxy%20Lab%20%E7%AC%94%E8%AE%B0.md)
 
 ### [initial_labs](https://github.com/Deconx/CSAPP-Lab/tree/master/initial_labs)
 
@@ -35,7 +36,7 @@
 - [x] [Performance Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/06_Performance%20Lab)
 - [x] [Shell Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/07_Shell%20Lab)
 - [x] [Malloc Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/08_Malloc%20Lab)
-- [ ] [Proxy Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/09_Proxy%20Lab)
+- [x] [Proxy Lab](https://github.com/Deconx/CSAPP-Lab/tree/master/solutions/09_Proxy%20Lab)
 
 ## 实验介绍
 
